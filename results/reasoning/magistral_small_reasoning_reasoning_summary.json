@@ -1,0 +1,96 @@
+{
+  "model_info": {
+    "base_model": "mistralai/Magistral-Small-2506",
+    "tokenizer": "mistralai/Mistral-Nemo-Instruct-2407",
+    "evaluation_type": "zero-shot-with-reasoning",
+    "reasoning_enabled": true,
+    "quantization": "nf4 (float16)",
+    "flash_attention": true,
+    "torch_compile": true,
+    "fine_tuning": "none",
+    "model_description": "mistralai/Magistral-Small-2506"
+  },
+  "dataset_info": {
+    "test_file": "./data/test.jsonl",
+    "total_questions_tested": 1000,
+    "max_eval_samples": 1000
+  },
+  "generation_config": {
+    "system_message": "Sei un assistente utile e intelligente.",
+    "max_tokens": 650,
+    "batch_size": 6,
+    "temperature": 0.1,
+    "top_p": 0.95,
+    "top_k": 20,
+    "prompt_style": "aggressive_reasoning"
+  },
+  "results": {
+    "total_questions": 1000,
+    "correct_answers": 796,
+    "accuracy": 0.796,
+    "accuracy_percent": 79.60000000000001,
+    "average_reasoning_length": 244.741,
+    "category_results": {
+      "current_events": {
+        "accuracy": 0.8690476190476191,
+        "correct": 73,
+        "total": 84
+      },
+      "lexicon": {
+        "accuracy": 0.891566265060241,
+        "correct": 74,
+        "total": 83
+      },
+      "orthography": {
+        "accuracy": 0.7469879518072289,
+        "correct": 62,
+        "total": 83
+      },
+      "art_history": {
+        "accuracy": 0.7619047619047619,
+        "correct": 64,
+        "total": 84
+      },
+      "synonyms_and_antonyms": {
+        "accuracy": 0.9397590361445783,
+        "correct": 78,
+        "total": 83
+      },
+      "syntax": {
+        "accuracy": 0.6867469879518072,
+        "correct": 57,
+        "total": 83
+      },
+      "geography": {
+        "accuracy": 0.8571428571428571,
+        "correct": 72,
+        "total": 84
+      },
+      "civic_education": {
+        "accuracy": 0.8095238095238095,
+        "correct": 68,
+        "total": 84
+      },
+      "history": {
+        "accuracy": 0.9036144578313253,
+        "correct": 75,
+        "total": 83
+      },
+      "morphology": {
+        "accuracy": 0.5783132530120482,
+        "correct": 48,
+        "total": 83
+      },
+      "literature": {
+        "accuracy": 0.7831325301204819,
+        "correct": 65,
+        "total": 83
+      },
+      "tourism": {
+        "accuracy": 0.7228915662650602,
+        "correct": 60,
+        "total": 83
+      }
+    }
+  }
+}
