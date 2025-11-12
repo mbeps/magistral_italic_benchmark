@@ -82,7 +82,7 @@ class MagistralReasoningBenchmark:
 
     def _merge_qlora_adapters(self) -> str:
         """Merge QLoRA adapters with base model (same as base implementation)"""
-        print(f"\n🔄 Merging QLoRA adapters with base model...")
+        print(f"\nMerging QLoRA adapters with base model...")
         print(f"Adapter path: {self.config.qlora_adapter_path}")
         print(f"Base model: {self.config.model_name}")
 
@@ -90,7 +90,7 @@ class MagistralReasoningBenchmark:
             from peft import AutoPeftModelForCausalLM
             from transformers import AutoTokenizer
 
-            print("📦 Loading QLoRA adapter and base model...")
+            print("Loading QLoRA adapter and base model...")
 
             peft_model = AutoPeftModelForCausalLM.from_pretrained(
                 self.config.qlora_adapter_path,
@@ -101,17 +101,17 @@ class MagistralReasoningBenchmark:
             )
 
             print(f"✅ PEFT model loaded")
-            print("🔄 Merging QLoRA adapters into base model...")
+            print("Merging QLoRA adapters into base model...")
             merged_model = peft_model.merge_and_unload()
             print(f"✅ Adapters merged")
 
             if self.config.merged_model_save_path:
                 merged_path = self.config.merged_model_save_path
-                print(f"💾 Saving merged model to: {merged_path}")
+                print(f"Saving merged model to: {merged_path}")
             else:
                 temp_dir = tempfile.mkdtemp(prefix="magistral_merged_")
                 merged_path = temp_dir
-                print(f"💾 Saving merged model to temporary directory: {merged_path}")
+                print(f"Saving merged model to temporary directory: {merged_path}")
 
             os.makedirs(merged_path, exist_ok=True)
             merged_model.save_pretrained(merged_path, safe_serialization=True)
@@ -323,7 +323,7 @@ Ragiona BREVEMENTE e rispondi ORA:"""
             else:
                 self.optimal_batch_size = 2
             
-            print(f"🚀 Optimal batch size for reasoning mode: {self.optimal_batch_size}")
+            print(f"Optimal batch size for reasoning mode: {self.optimal_batch_size}")
         else:
             self.optimal_batch_size = max(2, self.config.batch_size - 2)
 
@@ -331,7 +331,7 @@ Ragiona BREVEMENTE e rispondi ORA:"""
         """Load Magistral model with reasoning support"""
         # Determine which model to load
         if self.config.qlora_adapter_path:
-            print(f"🔄 QLoRA adapter specified - will merge with base model first")
+            print(f"QLoRA adapter specified - will merge with base model first")
             model_path = self._merge_qlora_adapters()
             self.merged_model_path = model_path
             model_description = f"{self.config.model_name} + QLoRA adapter"
@@ -339,7 +339,7 @@ Ragiona BREVEMENTE e rispondi ORA:"""
             model_path = self.config.model_name
             model_description = self.config.model_name
 
-        print(f"🔄 Loading {model_description} with REASONING support...")
+        print(f"Loading {model_description} with REASONING support...")
 
         # Load tokenizer
         print(f"Loading tokenizer: {self.config.tokenizer_name}")
@@ -462,8 +462,8 @@ Ragiona BREVEMENTE e rispondi ORA:"""
             adapter_name = os.path.basename(self.config.qlora_adapter_path.rstrip("/"))
             model_description += f" + QLoRA ({adapter_name})"
 
-        print(f"\n🤔 Evaluating {model_description} WITH REASONING on {len(data)} questions...")
-        print("⚡ Using aggressive prompting to minimize thinking time")
+        print(f"\nEvaluating {model_description} WITH REASONING on {len(data)} questions...")
+        print("Using aggressive prompting to minimize thinking time")
 
         results = []
         correct = 0
@@ -550,7 +550,7 @@ Ragiona BREVEMENTE e rispondi ORA:"""
 
         accuracy = correct / total if total > 0 else 0
 
-        print(f"\n📊 FINAL RESULTS (WITH REASONING):")
+        print(f"\nFINAL RESULTS (WITH REASONING):")
         print(f"Total questions: {total}")
         print(f"Correct answers: {correct}")
         print(f"Accuracy: {accuracy:.4f} ({accuracy * 100:.2f}%)")
@@ -566,7 +566,7 @@ Ragiona BREVEMENTE e rispondi ORA:"""
     @staticmethod
     def analyse_results_by_category(category_stats: dict):
         """Analyse results by category"""
-        print(f"\n📈 RESULTS BY CATEGORY (REASONING MODE):")
+        print(f"\nRESULTS BY CATEGORY (REASONING MODE):")
         print("-" * 60)
         print(f"{'Category':25s} {'Accuracy':>12s} {'Correct':>8s} {'Total':>8s}")
         print("-" * 60)
@@ -605,7 +605,7 @@ Ragiona BREVEMENTE e rispondi ORA:"""
 
     def save_results(self, results: list, accuracy: float, category_stats: dict):
         """Save benchmark results with reasoning metadata"""
-        print("\n💾 Saving reasoning benchmark results...")
+        print("\nSaving reasoning benchmark results...")
 
         results_df = pd.DataFrame(results)
         results_file = f"{self.config.output_prefix}_reasoning_results.csv"
@@ -680,9 +680,9 @@ Ragiona BREVEMENTE e rispondi ORA:"""
         """Run the complete reasoning benchmark"""
         print(f"\n{'=' * 60}")
         print("MAGISTRAL REASONING BENCHMARK")
-        print("🤔 THINKING MODE ENABLED")
+        print("THINKING MODE ENABLED")
         if self.config.qlora_adapter_path:
-            print("🔄 WITH QLORA ADAPTER SUPPORT")
+            print("WITH QLORA ADAPTER SUPPORT")
         print(f"{'=' * 60}")
 
         # Print configuration
@@ -691,7 +691,7 @@ Ragiona BREVEMENTE e rispondi ORA:"""
         print(f"✓ Aggressive prompting: YES (max 3 sentences)")
 
         # Load dataset
-        print(f"\n📚 Loading ITALIC dataset...")
+        print(f"\nLoading ITALIC dataset...")
         data = self.load_jsonl(self.config.test_file)
         print(f"Loaded {len(data)} questions")
 
@@ -712,7 +712,7 @@ Ragiona BREVEMENTE e rispondi ORA:"""
         self.load_model()
 
         # Test inference with reasoning
-        print(f"\n🧪 Testing inference with REASONING enabled...")
+        print(f"\nTesting inference with REASONING enabled...")
         test_messages, test_answer = self.configure_payload(test_data[0])
         test_responses = self.generate_batch_responses([test_messages])
         test_response = test_responses[0]
@@ -742,20 +742,20 @@ Ragiona BREVEMENTE e rispondi ORA:"""
             adapter_name = os.path.basename(self.config.qlora_adapter_path.rstrip("/"))
             model_description += f" + QLoRA ({adapter_name})"
 
-        print(f"\n🎉 REASONING EVALUATION COMPLETED!")
+        print(f"\nREASONING EVALUATION COMPLETED!")
         print("=" * 60)
-        print(f"📊 Model: {model_description}")
-        print(f"📊 Final accuracy: {accuracy:.4f} ({accuracy * 100:.2f}%)")
-        print(f"📊 Total questions evaluated: {len(results)}")
-        print(f"📊 Batch size used: {self.optimal_batch_size}")
-        print(f"🤔 Reasoning mode: ENABLED")
-        print(f"⚡ Aggressive prompting: YES")
+        print(f"Model: {model_description}")
+        print(f"Final accuracy: {accuracy:.4f} ({accuracy * 100:.2f}%)")
+        print(f"Total questions evaluated: {len(results)}")
+        print(f"Batch size used: {self.optimal_batch_size}")
+        print(f"Reasoning mode: ENABLED")
+        print(f"Aggressive prompting: YES")
         if self.config.qlora_adapter_path:
-            print(f"📊 QLoRA adapter merged and evaluated")
+            print(f"QLoRA adapter merged and evaluated")
         print("=" * 60)
 
         # Cleanup
-        print(f"\n🧹 Final cleanup...")
+        print(f"\nFinal cleanup...")
         if hasattr(self, 'model') and self.model:
             del self.model
         if hasattr(self, 'tokenizer') and self.tokenizer:
@@ -770,12 +770,12 @@ Ragiona BREVEMENTE e rispondi ORA:"""
         ):
             try:
                 shutil.rmtree(self.merged_model_path)
-                print(f"🗑️  Cleaned up temporary merged model: {self.merged_model_path}")
+                print(f"Cleaned up temporary merged model: {self.merged_model_path}")
             except Exception as e:
                 print(f"⚠️  Warning: Could not clean up temporary directory: {e}")
 
         final_memory = torch.cuda.memory_allocated() / 1024**3 if torch.cuda.is_available() else 0
         print(f"Final GPU memory usage: {final_memory:.2f}GB")
-        print(f"✅ {model_description} reasoning benchmark complete! 🚀")
+        print(f"✅ {model_description} reasoning benchmark complete!")
 
         return results, accuracy, category_stats

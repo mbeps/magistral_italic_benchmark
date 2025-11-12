@@ -81,7 +81,7 @@ class MagistralBenchmark:
 
     def _merge_qlora_adapters(self) -> str:
         """Merge QLoRA adapters with base model and return path to merged model"""
-        print(f"\n🔄 Merging QLoRA adapters with base model...")
+        print(f"\nMerging QLoRA adapters with base model...")
         print(f"Adapter path: {self.config.qlora_adapter_path}")
         print(f"Base model: {self.config.model_name}")
 
@@ -89,7 +89,7 @@ class MagistralBenchmark:
             from peft import AutoPeftModelForCausalLM
             from transformers import AutoTokenizer
 
-            print("📦 Loading QLoRA adapter and base model...")
+            print("Loading QLoRA adapter and base model...")
 
             # Load the PEFT model (automatically loads base model + adapter)
             peft_model = AutoPeftModelForCausalLM.from_pretrained(
@@ -110,11 +110,11 @@ class MagistralBenchmark:
             # Determine where to save the merged model
             if self.config.merged_model_save_path:
                 merged_path = self.config.merged_model_save_path
-                print(f"💾 Saving merged model to: {merged_path}")
+                print(f"Saving merged model to: {merged_path}")
             else:
                 temp_dir = tempfile.mkdtemp(prefix="magistral_merged_")
                 merged_path = temp_dir
-                print(f"💾 Saving merged model to temporary directory: {merged_path}")
+                print(f"Saving merged model to temporary directory: {merged_path}")
 
             # Save merged model
             os.makedirs(merged_path, exist_ok=True)
@@ -284,7 +284,7 @@ Risposta:"""
             else:
                 self.optimal_batch_size = 2
             
-            print(f"🚀 Optimal batch size determined: {self.optimal_batch_size}")
+            print(f"Optimal batch size determined: {self.optimal_batch_size}")
         else:
             self.optimal_batch_size = self.config.batch_size
 
@@ -293,7 +293,7 @@ Risposta:"""
         
         # Determine which model to load
         if self.config.qlora_adapter_path:
-            print(f"🔄 QLoRA adapter specified - will merge with base model first")
+            print(f"QLoRA adapter specified - will merge with base model first")
             model_path = self._merge_qlora_adapters()
             self.merged_model_path = model_path
             model_description = f"{self.config.model_name} + QLoRA adapter"
@@ -301,7 +301,7 @@ Risposta:"""
             model_path = self.config.model_name
             model_description = self.config.model_name
 
-        print(f"🔄 Loading {model_description}...")
+        print(f"Loading {model_description}...")
 
         # Load tokenizer
         print(f"Loading tokenizer: {self.config.tokenizer_name}")
@@ -507,7 +507,7 @@ Risposta:"""
 
         accuracy = correct / total if total > 0 else 0
 
-        print(f"\n📊 FINAL RESULTS:")
+        print(f"\nFINAL RESULTS:")
         print(f"Total questions: {total}")
         print(f"Correct answers: {correct}")
         print(f"Accuracy: {accuracy:.4f} ({accuracy * 100:.2f}%)")
@@ -517,7 +517,7 @@ Risposta:"""
     @staticmethod
     def analyse_results_by_category(category_stats: dict):
         """Analyse results by category"""
-        print(f"\n📈 RESULTS BY CATEGORY:")
+        print(f"\nRESULTS BY CATEGORY:")
         print("-" * 60)
         print(f"{'Category':25s} {'Accuracy':>12s} {'Correct':>8s} {'Total':>8s}")
         print("-" * 60)
@@ -535,7 +535,7 @@ Risposta:"""
     @staticmethod
     def show_sample_predictions(results: list, n_samples: int = 5):
         """Show sample predictions"""
-        print(f"\n🔍 SAMPLE PREDICTIONS:")
+        print(f"\nSAMPLE PREDICTIONS:")
 
         # Show mix of correct and incorrect
         correct_samples = [r for r in results if r["is_correct"]][: n_samples // 2]
@@ -557,7 +557,7 @@ Risposta:"""
 
     def save_results(self, results: list, accuracy: float, category_stats: dict):
         """Save benchmark results"""
-        print("\n💾 Saving results...")
+        print("\nSaving results...")
 
         # Save detailed results
         results_df = pd.DataFrame(results)
@@ -634,14 +634,14 @@ Risposta:"""
         print(f"\n{'=' * 60}")
         print("MAGISTRAL BENCHMARK")
         if self.config.qlora_adapter_path:
-            print("🔄 WITH QLORA ADAPTER SUPPORT")
+            print("WITH QLORA ADAPTER SUPPORT")
         print(f"{'=' * 60}")
 
         # Print configuration
         self.config.print_config()
 
         # Load dataset
-        print(f"\n📚 Loading ITALIC dataset...")
+        print(f"\nLoading ITALIC dataset...")
         data = self.load_jsonl(self.config.test_file)
         print(f"Loaded {len(data)} questions")
 
@@ -662,7 +662,7 @@ Risposta:"""
         self.load_model()
 
         # Test inference
-        print(f"\n🧪 Testing inference...")
+        print(f"\nTesting inference...")
         test_messages, test_answer = self.configure_payload(test_data[0])
         test_responses = self.generate_batch_responses([test_messages])
         test_response = test_responses[0]
@@ -692,18 +692,18 @@ Risposta:"""
             adapter_name = os.path.basename(self.config.qlora_adapter_path.rstrip("/"))
             model_description += f" + QLoRA ({adapter_name})"
 
-        print(f"\n🎉 EVALUATION COMPLETED!")
+        print(f"\nEVALUATION COMPLETED!")
         print("=" * 60)
-        print(f"📊 Model: {model_description}")
-        print(f"📊 Final accuracy: {accuracy:.4f} ({accuracy * 100:.2f}%)")
-        print(f"📊 Total questions evaluated: {len(results)}")
-        print(f"📊 Batch size used: {self.optimal_batch_size}")
+        print(f"Model: {model_description}")
+        print(f"Final accuracy: {accuracy:.4f} ({accuracy * 100:.2f}%)")
+        print(f"Total questions evaluated: {len(results)}")
+        print(f"Batch size used: {self.optimal_batch_size}")
         if self.config.qlora_adapter_path:
-            print(f"📊 QLoRA adapter merged and evaluated")
+            print(f"QLoRA adapter merged and evaluated")
         print("=" * 60)
 
         # Cleanup
-        print(f"\n🧹 Final cleanup...")
+        print(f"\nFinal cleanup...")
         if hasattr(self, 'model') and self.model:
             del self.model
         if hasattr(self, 'tokenizer') and self.tokenizer:
@@ -718,12 +718,12 @@ Risposta:"""
         ):
             try:
                 shutil.rmtree(self.merged_model_path)
-                print(f"🗑️  Cleaned up temporary merged model: {self.merged_model_path}")
+                print(f"Cleaned up temporary merged model: {self.merged_model_path}")
             except Exception as e:
                 print(f"⚠️  Warning: Could not clean up temporary directory: {e}")
 
         final_memory = torch.cuda.memory_allocated() / 1024**3 if torch.cuda.is_available() else 0
         print(f"Final GPU memory usage: {final_memory:.2f}GB")
-        print(f"✅ {model_description} benchmark complete! 🚀")
+        print(f"✅ {model_description} benchmark complete!")
 
         return results, accuracy, category_stats

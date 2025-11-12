@@ -8,7 +8,7 @@ from .config import MagistralBenchmarkConfig
 from .benchmark import MagistralBenchmark
 from .benchmark_reasoning import MagistralReasoningBenchmark
 
-__all__ = [
+__all__: list[str] = [
     "MagistralBenchmarkConfig",
     "MagistralBenchmark",
     "MagistralReasoningBenchmark",
